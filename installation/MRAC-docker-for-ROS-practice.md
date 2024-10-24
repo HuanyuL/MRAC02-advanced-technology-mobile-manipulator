@@ -1,5 +1,7 @@
 # ROS/ROS2 with Docker for Robots and Sensors at IAAC
 
+Author: [Huanyu Li](https://github.com/HuanyuL)
+
 ## Attribution
 
 Sections of this README, including "Challenges in Software Deployment" and "Docker to the Rescue," are adapted from content originally found in [docker-for-robotics](https://github.com/2b-t/docker-for-robotics/tree/main). Full credit goes to the original authors for their contributions to the explanation of these topics.
