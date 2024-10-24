@@ -358,7 +358,7 @@ sudo chown -R $USER /dev_ws
 
 - **Push Changes to Git**: After you’ve completed your development work, remember to push your changes back to the repository.
 
-### 8. Future improvements
+## 8. Future improvements
 
 Using a single Docker image for all your ROS development can lead to significant limitations as project complexity increases. Managing dependencies and configurations becomes challenging, often resulting in a monolithic structure that is harder to maintain and troubleshoot. Performance issues may arise since all services run together, potentially causing resource-intensive nodes to bottleneck others. The lack of isolation means that problems in one service can impact the entire application, complicating debugging efforts. Scaling specific components becomes difficult, as you would need to rebuild the image to accommodate changes, hindering deployment and continuous integration practices. Development flexibility is limited, making it challenging to test individual components or configurations without affecting the entire system. Moreover, the growing image size can lead to longer build times, complicating image lifecycle management, while managing different versions of ROS or dependencies can result in conflicts.
 
