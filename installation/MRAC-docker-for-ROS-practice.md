@@ -290,6 +290,74 @@ docker run -it --privileged \
 
 ```
 
-## 7. Build your own application
+## 7.Docker workflow for ROS projects
+The workflow for any ROS project using Docker follows three layers or stacks: **Hardware Layer**, **Operation Layer**, and **Development Layer**. Each layer will be represented as a submodule with its specific Dockerfile modifications. The project file system will be in following structure
 
+You have to modify the Dockerfile to configure dependencies specific to the layers. Each layer—hardware, operation, and development—may require different libraries, tools, or ROS packages. To ensure the container has all necessary dependencies.
+```
+Project/
+│
+├── .git/                         # Git repository folder (hidden by default)
+│
+├── .gitmodules                   # Git submodules configuration file
+│
+├── .docker/                      # Docker configuration files
+│   ├── Dockerfile          
+│   ├── build_image.sh      
+|   ├── entrypoints.sh      
+|   ├── ...
+│
+├── HARDWARE_LAYER(SUBMODULE)/    # First hardware layer, submodules can be found from this repository
+│   ├── launch/
+│   ├── src/
+│   └── ...
+│
+├── OPERATION_LAYER(SUBMODULE)/   # Operation layer, submodules can be found from this repository
+│   ├── launch/
+│   ├── src/
+│   └── ...
+│
+├── DEVELOPMENT_LAYER/            # Development layer, this layer is where you implement and containerize new features.
+│   ├── launch/
+│   ├── src/
+│   └── ...
+└── README.md                     # Project documentation and setup instructions
+```
 
+### 7.1 Initial consideration: Development vs. Data Extraction
+In ROS projects, "development" refers to the process of creating, modifying, and improving components that allow robots to perform tasks. This encompasses writing node scripts that carry out specific functions, such as navigation or motor control, and building and managing packages to organize code, launch files, configuration files, and dependencies. It also includes creating custom message types for inter-node communication and defining services for request/response interactions. 
+
+Conversely, if you are just tweaking data, such as adjusting parameters in a configuration file or fine-tuning a launch file for existing nodes, you may not need to create a new package, as this usually does not constitute full development. Similarly, assembling messages, which involves combining or processing data sent via topics, might not require a new package if it is a minor modification to existing code or nodes. However, if your efforts to assemble messages include writing new logic for message handling, creating new pipelines, or introducing new nodes that process or transform data, then it does count as development. While simple parameter adjustments may not qualify as full development, they remain part of the overall engineering process in ROS.
+
+### 7.2 Building the container and managing changes with Git
+When working with Docker containers, it’s important to remember that any changes made inside the container will be lost once you shut it down. To ensure continuous development, we use Git as our storage solution. Here’s the overall workflow for managing your development process:
+
+- **Pull the last changes**: Begin by pulling the latest updates from the repository to ensure you have the most recent code. You can do this using the command:
+```
+git pull
+```
+- **Build the docker image**: Next, build the Docker image using the provided script. This can be done with the following command:
+```
+.docker/build_image.sh
+```
+- **Run the Container**: Depending on your requirements, you can run the container with one of the following scripts:
+    - For a standard user container:
+    ```
+    .docker/run_user.sh
+    ```
+    - For a container with NVIDIA support (if you’re using GPUs):
+    ```
+    .docker/run_user_nvidia.sh
+    ```
+- **Change the ownership of the workspace**: The container will log in as the user with their password and x server access, to take the ownership of the workspace you have to run:
+```
+sudo chown -R $USER /dev_ws
+```
+
+- **Push Changes to Git**: After you’ve completed your development work, remember to push your changes back to the repository.
+
+### 8. Future improvements
+
+Using a single Docker image for all your ROS development can lead to significant limitations as project complexity increases. Managing dependencies and configurations becomes challenging, often resulting in a monolithic structure that is harder to maintain and troubleshoot. Performance issues may arise since all services run together, potentially causing resource-intensive nodes to bottleneck others. The lack of isolation means that problems in one service can impact the entire application, complicating debugging efforts. Scaling specific components becomes difficult, as you would need to rebuild the image to accommodate changes, hindering deployment and continuous integration practices. Development flexibility is limited, making it challenging to test individual components or configurations without affecting the entire system. Moreover, the growing image size can lead to longer build times, complicating image lifecycle management, while managing different versions of ROS or dependencies can result in conflicts.
+
+Docker Compose development offers numerous benefits, particularly in facilitating a multi-container architecture that isolates different components, such as various ROS nodes, without conflict. By defining all services in a single docker-compose.yml file, you simplify configuration and networking, allowing seamless communication between containers. For example, a basic setup could include multiple ROS nodes running different commands while sharing a common workspace through mounted volumes. This approach not only makes it easier for students to experiment and modify individual components without impacting the entire system but also ensures a reproducible and collaborative development environment. Additionally, once the dependencies and industrial packages have stable version or finished we can move the contianers to docker hub which can be easily used by all users and running in both linux and windows system.
