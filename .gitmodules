@@ -1,3 +1,6 @@
 [submodule "installation/ros2-introduction"]
 	path = installation/ros2-introduction
 	url = https://github.com/MRAC-IAAC/ros2-introduction.git
+[submodule "installation/MRAC-docker-for-ROS-practice"]
+	path = installation/MRAC-docker-for-ROS-practice
+	url = https://github.com/MRAC-IAAC/MRAC-docker-for-ROS-practice.git
