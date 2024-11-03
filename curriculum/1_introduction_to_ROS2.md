@@ -1,4 +1,4 @@
-Th# Introduction to ROS2
+# Introduction to ROS2
 ## Therory
 Slides can be found in the gdrive folder.
 
