@@ -10,7 +10,7 @@ The course is divided into the following parts:
 
 ## Dockerized Environments
 Dockerized environments for these components can be found in the following repositories:
-- [ros-intro](#)
+- [ros-intro](https://github.com/MRAC-IAAC/MRAC-docker-for-ROS-practice/tree/main/examples)
 - [moveit2-intro](#)
 - [husky-intro](#)
 
