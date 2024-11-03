@@ -1,4 +1,6 @@
 # MRAC02-Mobile-Manipulator
+Authors: [Huanyu Li](https://github.com/HuanyuL), [Marita Georganta](https://github.com/maritaganta)
+
 This repository contains the structure and materials for the **MRAC02 Advanced Technology Seminar**, focusing on mobile manipulators. The seminar covers key technologies used in mobile manipulation, specifically designed for robotic systems utilizing the Husky UR10e mobile platform.
 
 ## Course Sections
